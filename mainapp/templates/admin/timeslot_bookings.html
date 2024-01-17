@@ -1,0 +1,237 @@
+{% extends 'base.html' %} {% block container_class %}custom-wide-container{% endblock %} {% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">Timeslots</h1>
+
+<h3 style="color: rgb(0, 0, 201)">New</h3>
+{% if new_timeslots %}
+<table style="text-align: left" class="account-table">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			<th>Client Profile</th>
+			<th>Dancer</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for timeslot in new_timeslots %}
+		<tr class="timeslot-{{ timeslot.id }}">
+			<td>{{ timeslot.date }}</td>
+			<td>{{ timeslot.start_time }}</td>
+			<td>{{ timeslot.end_time }}</td>
+			<td>
+				<a href="{% url 'user-profile' timeslot.client.id %}"
+					>{{ timeslot.client.username }}</a
+				>
+			</td>
+			<td>{{ timeslot.client.dancer_full_name }}</td>
+			<td>
+				<form
+					method="post"
+					action="{% url 'dismiss_notification' timeslot.id %}">
+					{% csrf_token %}
+
+					<button type="submit" class="dismiss-btn" data-id="{{timeslot.id}}">
+						Dismiss Notification
+					</button>
+				</form>
+			</td>
+		</tr>
+
+		{% endfor %} {% else %} None {% endif %}
+	</tbody>
+</table >
+<div class="pagination">
+	<span class="step-links">
+		{% if new_timeslots.has_previous %}
+			<a href="?page_new=1">&laquo; first</a>
+			<a href="?page_new={{ new_timeslots.previous_page_number }}">previous</a>
+		{% endif %}
+  
+		<span class="current">
+			Page {{ new_timeslots.number }} of {{ new_timeslots.paginator.num_pages }}.
+		</span>
+  
+		{% if new_timeslots.has_next %}
+			<a href="?page_new={{ new_timeslots.next_page_number }}">next</a>
+			<a href="?page_new={{ new_timeslots.paginator.num_pages }}">last &raquo;</a>
+		{% endif %}
+	</span>
+  </div>
+<hr class="horizontal-line" />
+<h3 style="color: rgb(1, 96, 1)">Confirmed</h3>
+<table style="text-align: left" class="account-table">
+	{% if confirmed_timeslots %}
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			<th>Client Profile</th>
+			<th>Dancer</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for timeslot in confirmed_timeslots %}
+		<tr>
+			<td>{{ timeslot.date }}</td>
+			<td>{{ timeslot.start_time }}</td>
+			<td>{{ timeslot.end_time }}</td>
+			<td>
+				<a href="{% url 'user-profile' timeslot.client.id %}"
+					>{{ timeslot.client.username }}</a>
+			</td>
+			<td>{{ timeslot.client.dancer_full_name }}</td>
+		</tr>
+
+		{% endfor %}
+	</tbody>
+		{% else %}
+		None
+		{% endif %}
+</table>
+<div class="pagination">
+  <span class="step-links">
+      {% if confirmed_timeslots.has_previous %}
+          <a href="?page_confirmed=1">&laquo; first</a>
+          <a href="?page_confirmed={{ confirmed_timeslots.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ confirmed_timeslots.number }} of {{ confirmed_timeslots.paginator.num_pages }}.
+      </span>
+
+      {% if confirmed_timeslots.has_next %}
+          <a href="?page_confirmed={{ confirmed_timeslots.next_page_number }}">next</a>
+          <a href="?page_confirmed={{ confirmed_timeslots.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>
+<hr class="horizontal-line" />
+<h3 style="color: rgb(199, 0, 0)">Canceled</h3>
+{% if canceled_timeslots %}
+<table style="text-align: left" class="account-table">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			<th>Client Profile</th>
+			<th>Dancer</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		
+		{% for timeslot in canceled_timeslots %}
+		<tr>
+			<td>{{ timeslot.date }}</td>
+			<td>{{ timeslot.start_time }}</td>
+			<td>{{ timeslot.end_time }}</td>
+			<td>
+				<a href="{% url 'user-profile' timeslot.client.id %}">{{ timeslot.client.username }}</a>
+			</td>
+			<td>{{ timeslot.client.dancer_full_name }}</td>
+			<td></td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		None
+		{% endif %}
+	</tbody>
+</table>
+<div class="pagination">
+	<span class="step-links">
+		{% if canceled_timeslots.has_previous %}
+			<a href="?page_canceled=1">&laquo; first</a>
+			<a href="?page_canceled={{ canceled_timeslots.previous_page_number }}">previous</a>
+		{% endif %}
+  
+		<span class="current">
+			Page {{ canceled_timeslots.number }} of {{ canceled_timeslots.paginator.num_pages }}.
+		</span>
+  
+		{% if canceled_timeslots.has_next %}
+			<a href="?page_canceled={{ canceled_timeslots.next_page_number }}">next</a>
+			<a href="?page_canceled={{ canceled_timeslots.paginator.num_pages }}">last &raquo;</a>
+		{% endif %}
+	</span>
+  </div>
+  <hr class="horizontal-line" />
+  <h3 style="color: rgb(0, 0, 0)">Completed</h3>
+  {% if completed_timeslots %}
+  <table style="text-align: left" class="account-table">
+	  <thead>
+		  <tr>
+			  <th>Date</th>
+			  <th>Start Time</th>
+			  <th>End Time</th>
+			  <th>Client Profile</th>
+			  <th>Dancer</th>
+			  <th></th>
+		  </tr>
+	  </thead>
+	  <tbody>
+		  
+		  {% for timeslot in completed_timeslots %}
+		  <tr>
+			  <td>{{ timeslot.date }}</td>
+			  <td>{{ timeslot.start_time }}</td>
+			  <td>{{ timeslot.end_time }}</td>
+			  <td>
+				  <a href="{% url 'user-profile' timeslot.client.id %}">{{ timeslot.client.username }}</a>
+			  </td>
+			  <td>{{ timeslot.client.dancer_full_name }}</td>
+			  <td></td>
+		  </tr>
+		  {% endfor %}
+		  {% else %}
+		  None
+		  {% endif %}
+	  </tbody>
+  </table>
+  <div class="pagination">
+	<span class="step-links">
+		{% if completed_timeslots.has_previous %}
+			<a href="?page_completed=1">&laquo; first</a>
+			<a href="?page_completed={{ completed_timeslots.previous_page_number }}">previous</a>
+		{% endif %}
+  
+		<span class="current">
+			Page {{ completed_timeslots.number }} of {{ completed_timeslots.paginator.num_pages }}.
+		</span>
+  
+		{% if completed_timeslots.has_next %}
+			<a href="?page_canceled={{ completed_timeslots.next_page_number }}">next</a>
+			<a href="?page_canceled={{ completed_timeslots.paginator.num_pages }}">last &raquo;</a>
+		{% endif %}
+	</span>
+  </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$(".dismiss-btn").on("click", function (event) {
+			event.preventDefault(); // Prevent the default form submission
+
+			var timeslotId = $(this).data("id");
+			$.ajax({
+				url: "/dismiss_notification/" + timeslotId + "/",
+				type: "POST",
+				headers: {
+					"X-CSRFToken": "{{ csrf_token }}",
+				},
+				success: function (response) {
+					if (response.status === "success") {
+						// Hide the notification for this timeslot
+						$(".timeslot-" + timeslotId).hide();
+					}
+				},
+			});
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+table th:nth-child(1),
+table td:nth-child(1) {
+	width: 20%;
+} /* Date */
+table th:nth-child(2),
+table td:nth-child(2) {
+	width: 10%;
+} /* Start Time */
+table th:nth-child(3),
+table td:nth-child(3) {
+	width: 20%;
+} /* End Time */
+table th:nth-child(4),
+table td:nth-child(4) {
+	width: 20%;
+} /* Client Profile */
+table th:nth-child(5),
+table td:nth-child(5) {
+	width: 10%;
+}

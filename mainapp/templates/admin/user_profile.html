@@ -1,0 +1,103 @@
+{% extends 'base.html' %} 
+{% block container_class %}custom-wide-container{% endblock %}
+{% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">{{user.username}}'s Account</h1>
+<div class="profile-container">
+    <div class="profile-column">
+        <div class="profile-row">
+            <div class="profile-row-title">Dancer Full Name</div>
+            <div>{{ user.dancer_full_name }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Dancer Date of Birth</div>
+            <div>{{ user.dancer_date_of_birth }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Date Joined</div>
+            <div>{{ user.date_joined }}</div>
+        </div>
+		<div class="profile-row">
+            <div class="profile-row-title">Emergency Contact</div>
+            <div>{{ user.emergency_contact_full_name }} 
+				{{user.emergency_contact_phone}}</div>
+        </div>
+    </div>
+    <div class="profile-column">
+        <div class="profile-row">
+            <div class="profile-row-title">Parent Full Name</div>
+            <div>{{ user.parent_full_name }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Parent Email</div>
+            <div>{{ user.parent_email }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Home Address</div>
+            <div>{{ user.address }}, {{ user.city}}, {{ user.province }}, {{ user.zip_code }}</div>
+        </div>
+    </div>
+</div>
+<h3>Timeslots</h3>
+<table class="account-table">
+    {% if user_timeslots %}
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		{% for timeslot in user_timeslots %}
+		<tr>
+			<td>{{ timeslot.date }}</td>
+			<td>{{ timeslot.start_time }}</td>
+			<td>{{ timeslot.end_time }}</td>
+			
+		</tr>
+
+		{% endfor %}
+	</tbody>
+    {% else %}<tr><td>None</td></tr>  {% endif %} 
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if user_timeslots.has_previous %}
+            <a href="?page_confirmed=1">&laquo; first</a>
+            <a href="?page_confirmed={{ user_timeslots.previous_page_number }}">previous</a>
+        {% endif %}
+  
+        <span class="current">
+            Page {{ user_timeslots.number }} of {{ user_timeslots.paginator.num_pages }}.
+        </span>
+  
+        {% if user_timeslots.has_next %}
+            <a href="?page_confirmed={{ user_timeslots.next_page_number }}">next</a>
+            <a href="?page_confirmed={{ user_timeslots.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+  </div>
+<h3>Invoices</h3>
+<ul style="font-family: 'Poppins', sans-serif;">
+    {% for invoice in invoices %}
+    <li>
+        <a href="{{ invoice.pdf_file.url }}" target="_blank">Invoice for {{ invoice.month }}/{{ invoice.year }}</a>
+    </li>
+    {% endfor %}
+</ul>
+<h3><a href="{% url 'create_invoice_for_user' user.id %}">Create Invoice for <strong>User: {{ user.username }}</strong></a></h3>
+
+<h3>Send Invoice by Email</h3>
+<form method="post" action="{% url 'send_invoice_email' user.id %}">
+    {% csrf_token %}
+    <select name="invoice_id" class="invoice-input">
+        {% for invoice in invoices %}
+            <option value="{{ invoice.id }}">Invoice for {{ invoice.month }} {{ invoice.year }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" class="invoice-input" value="Send Invoice Email">
+</form>
+
+{% endblock %}

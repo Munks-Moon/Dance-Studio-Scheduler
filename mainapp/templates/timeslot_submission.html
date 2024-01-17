@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h2 class="page-heading">Apply for a Timeslot</h2>
+
+<h4>Availability</h4>
+<h5>Weekdays: 4pm - 10pm</h5>
+<h5>Weekends: 9am - 10pm</h5>
+<h5>Please check calendar**</h5>
+<hr class="horizontal-line" />
+<h4>Waitlist</h4>
+<h5>
+	If your intended timeslot is not shown, apply for a waitlist
+	slot <a href="{% url 'waitlist-submission' %}">here</a>
+</h5>
+<hr class="horizontal-line" />
+<form class="timeslot-form" method="post" onsubmit="return confirmSubmit();">
+	{% csrf_token %} {{ form|crispy }}
+
+	<button type="submit">Submit</button>
+</form>
+<script type="text/javascript">
+	function confirmSubmit() {
+		return confirm("Are you sure you want to submit?");
+	}
+</script>
+{% endblock %}

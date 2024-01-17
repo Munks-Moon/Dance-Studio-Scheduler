@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">Announcements</h1>
+{% if announcements %}
+{% for a in announcements %}
+<hr class="horizontal-line">
+<div class="announcement-container">
+    <div><h2>{{a.title}}</h2></div>
+    <div><h5>{{a.created_at}}</h5></div>
+    <div>{{a.content}}</div>
+</div>
+{% endfor %}
+{% else %}
+<h4>There are no new announcements.</h4>
+{% endif %}
+
+{% endblock %}

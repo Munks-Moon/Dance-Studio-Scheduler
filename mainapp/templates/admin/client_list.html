@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">Client List</h1>
+<table style="width: 100%; text-align: left;">
+	<thead>
+		<tr>
+			<th>Username</th>
+            <th>Dancer</th>
+            <th>Parent Full Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for client in clients %}
+		<tr>
+			<td><a href="{% url 'user-profile' client.id %}">{{client.username}}</a></td>
+            <td>{{client.dancer_full_name}}</td>
+            <td>{{client.parent_full_name}}</td>
+        </tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

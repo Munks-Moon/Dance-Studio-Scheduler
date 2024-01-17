@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="page-heading">Create Invoice</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.month.label }}: {{ form.month }}
+    {{ form.year.label }}: {{ form.year }}
+    <button type="submit">Generate Invoice</button>
+</form>
+{% endblock %}

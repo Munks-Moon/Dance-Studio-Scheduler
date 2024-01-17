@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reference #{{ invoice.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .header {
+            text-align: center;
+        }
+        .details {
+            margin-top: 50px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .details th, .details td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .details th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Dance Studio Invoice</h1>
+        <p>Invoice #{{ invoice.id }}</p>
+        <p>Date: {{ invoice.created_at|date:"M d, Y" }}</p>
+    </div>
+    <h2>Invoice Month: {{month}}</h2>
+    <h3>Client Details:</h3>
+    <p>
+        Parent Full Name: {{ invoice.client.parent_full_name }}<br>
+        Email: {{ invoice.client.parent_email }}<br>
+        Address: {{ invoice.client.address }}, {{ invoice.client.city }}, {{ invoice.client.province }}, {{ invoice.client.zip_code }}<br>
+        Dancer Full Name: {{ invoice.client.dancer_full_name }}<br>
+    </p>
+    <hr>
+    <h3>Invoice Details</h3>
+    
+    <h4>Timeslots for {{ month }} {{ year }}</h4>
+<table class="details">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <!-- ... any other fields you want to display ... -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for timeslot in timeslots %}
+        <tr>
+            <td>{{ timeslot.date }}</td>
+            <td>{{ timeslot.start_time }}</td>
+            <td>{{ timeslot.end_time }}</td>
+            <!-- ... any other fields you want to display ... -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <table class="details">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Year</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ invoice.month }}</td>
+                <td>{{ invoice.year }}</td>
+                <td>${{ invoice.total_amount }}.00</td>
+                <td>{{ invoice.is_paid|yesno:"Paid,Unpaid" }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+        <p>If you have any questions regarding this invoice, please contact us.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Hello {{ user.username }},
+
+Please find attached the invoice.
+
+Thank you,
+Your Dance Studio

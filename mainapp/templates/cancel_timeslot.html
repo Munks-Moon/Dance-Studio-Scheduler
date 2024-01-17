@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Cancel Timeslot</h2>
+<p>Date: {{timeslot.date}} - {{timeslot.start_time}} - {{timeslot.end_time}}</p>
+
+<form method="post" action="{% url 'confirm_cancellation' timeslot.id %}">
+    {% csrf_token %}
+    <input class="cancel-button" name="confirm_cancellation" type="submit" value="Confirm Cancellation">
+</form>
+{% endblock %}

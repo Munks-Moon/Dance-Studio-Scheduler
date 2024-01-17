@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block container_class%}custom-wide-container{%endblock %} {% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">Waitlist</h1>
+{% if waitlist %}
+<table style="text-align: left" class="account-table">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			<th>Waitlist Count</th>
+			<th>Waitlist Details</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		
+		{% for timeslot in waitlist %}
+		<tr>
+			<td>{{ timeslot.date }}</td>
+			<td>{{ timeslot.start_time }}</td>
+			<td>{{ timeslot.end_time }}</td>
+			<td>{{ timeslot.waitlist_count }}</td>
+			<td>
+				{% for timeslot in waitlist %}
+				<a href="{% url 'waitlist_timeslot' timeslot.id %}">View</a>
+				{% endfor %}
+			</td>
+		</tr>
+		{% endfor %}
+		
+	</tbody>
+	
+</table>
+{% else %}
+		There are no waitlist entries currently.
+		{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block container_class %}custom-wide-container{%endblock %} {% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">Waitlist Timeslot</h1>
+<h2>
+	{{ timeslot.date }} / {{ timeslot.start_time }} - {{ timeslot.end_time }} ({{timeslot.client.username}})
+</h2>
+
+<table style="text-align: left" class="account-table">
+	<thead>
+		<tr>
+			<th>Order</th>
+            <th>Date Submitted</th>
+			<th>User</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for waitlist_entry in waitlist %}
+		<tr>
+			<td>{{ forloop.counter }}</td>
+            <td>{{ waitlist_entry.timestamp }}</td>
+			<td><a href="{% url 'user-profile' waitlist_entry.user.id %}">{{ waitlist_entry.user }}</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

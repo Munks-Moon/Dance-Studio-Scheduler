@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block container_class %}calendar-container{%endblock %} {% block content %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+
+{{cal|safe}}
+
+<div style="text-align: center;">
+	<a href="{% url 'calendar' year=prev_year month=prev_month %}"
+		>Previous Month</a
+	>
+	<a style="margin-left: 10px;" href="{% url 'calendar' year=next_year month=next_month %}">Next Month</a>
+</div>
+{% endblock %}

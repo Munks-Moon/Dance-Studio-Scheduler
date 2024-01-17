@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %} {% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+		{{ message }}
+	</li>
+	{% endfor %}
+</ul>
+{% endif %}
+<h1 class="dance-studio-heading">Dance Studio</h1>
+
+<h4><a href="{% url 'calendar' year=year month=month %}">Calendar</a></h4>
+<h4><a href="{% url 'announcements' %}">Announcements</a></h4>
+<h4><a href="{% url 'account' %}">Your account</a></h4>
+<h4><a href="{% url 'timeslot' %}">Book a timeslot</a></h4>
+{% if user.is_staff %}
+<hr class="horizontal-line">
+<h2 class="page-heading">ADMIN</h2>
+<h4><a href="{% url 'timeslot-bookings' %}">All Timeslots</a>{% if new_timeslot %}
+    <div class="notification">
+        You have new timeslots!
+    </div>
+{% endif %}</h4>
+<h4><a href="{% url 'client-list' %}">Client List</a></h4>
+<h4><a href="{% url 'waitlist' %}">Waitlist</a></h4>
+<h4><a href="{% url 'create-announcement' %}">Make an announcement</a></h4>
+{% endif %}
+<hr class="horizontal-line" />
+<h4><a href="{% url 'logout' %}">Logout</a></h4>
+{% endblock %}

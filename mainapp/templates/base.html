@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Dance Studio</title>
+		<style>
+			body {
+				background-image: url("{% static 'img/gradient-background.jpg' %}");
+			}
+		</style>
+
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.8.0/main.min.css"
+			rel="stylesheet" />
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Poppins&display=swap" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.8.0/main.min.js"></script>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'css/style.css' %}" />
+	</head>
+	<body>
+		<header>
+			<img src="{% static 'img/dancer-full.png' %}">
+		</header>
+		<div class="{% block container_class %}container{% endblock %}">{% block content %} {% endblock %}</div>
+	</body>
+	<br>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var calendarEl = document.getElementById("calendar");
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: "dayGridMonth",
+			});
+			calendar.render();
+		});
+	</script>
+</html>

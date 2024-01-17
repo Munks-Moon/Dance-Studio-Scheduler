@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block container_class %}custom-wide-container{% endblock %}
+{% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<h4><a href="{% url 'dashboard' %}">Dashboard</a></h4>
+<h1 class="page-heading">Your Account</h1>
+<h3>Username: {{ current_user.username }}</h3>
+{% if not user.is_superuser %}
+
+<div class="profile-container">
+    <div class="profile-column">
+        <div class="profile-row">
+            <div class="profile-row-title">Dancer Full Name</div>
+            <div>{{ current_user.dancer_full_name }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Dancer Date of Birth</div>
+            <div>{{ current_user.dancer_date_of_birth }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Date Joined</div>
+            <div>{{ current_user.date_joined }}</div>
+        </div>
+		<div class="profile-row">
+            <div class="profile-row-title">Emergency Contact</div>
+            <div>{{ current_user.emergency_contact_full_name }} 
+				{{current_user.emergency_contact_phone}}</div>
+        </div>
+    </div>
+    <div class="profile-column">
+        <div class="profile-row">
+            <div class="profile-row-title">Parent Full Name</div>
+            <div>{{ current_user.parent_full_name }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Parent Email</div>
+            <div>{{ current_user.parent_email }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Home Address</div>
+            <div>{{ current_user.address }}, {{ current_user.city}}, {{ current_user.province }}, {{ current_user.zip_code }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="profile-row-title">Edit Account</div>
+            <div><a href="{% url 'edit-account' %}">Click here</a></div>
+        </div>
+    </div>
+</div>
+
+<h2>Your Timeslots</h2>
+<table class="account-table">
+    {% if timeslots %}
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start</th>
+			<th>End</th>
+		</tr>
+	</thead>
+	<tbody>
+        {% for timeslot in timeslots %}
+        
+		<tr>
+			<td>{{timeslot.date}}</td>
+			<td>{{timeslot.start_time}}</td>
+			<td>{{timeslot.end_time}}</td>
+            
+            {% if timeslot.status == 'confirmed' %}
+			<td>
+				<a href="{% url 'cancel-timeslot' timeslot.id %}" style="color: rgb(200, 0, 0)"
+					>Cancel Timeslot</a
+				>
+			</td>
+            {% else %}
+            <td style="color: red">CANCELED</td>
+        
+            {% endif %}
+		</tr>
+        {% endfor %}
+	</tbody>
+    {% else %}<tr><td>None</td></tr>  {% endif %}
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if timeslots.has_previous %}
+            <a href="?page_confirmed=1">&laquo; first</a>
+            <a href="?page_confirmed={{ timeslots.previous_page_number }}">previous</a>
+        {% endif %}
+  
+        <span class="current">
+            Page {{ timeslots.number }} of {{ timeslots.paginator.num_pages }}.
+        </span>
+  
+        {% if timeslots.has_next %}
+            <a href="?page_confirmed={{ timeslots.next_page_number }}">next</a>
+            <a href="?page_confirmed={{ timeslots.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+  </div>
+<h2>Your Waitlist Entries</h2>
+
+<table class="account-table">
+	{% if waitlist_positions %}
+	<thead>
+		<tr >
+			<th>Date</th>
+			<th>Date Submitted</th>
+			<th>Waitlist Order</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for entry, position in waitlist_positions %}
+        
+        <tr>
+            <td>{{ entry.timeslot }}</td>
+            <td>{{ entry.timestamp }}</td>
+            <td>{{ position }}</td>
+			<td>
+				<a href="{% url 'cancel-waitlist' entry.id %}" style="color: rgb(200, 0, 0);"
+					>Cancel Waitlist</a>
+				
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	{% else %}<tr><td>None</td></tr>  {% endif %}
+</table>
+{% endif %}
+
+{% endblock %}
